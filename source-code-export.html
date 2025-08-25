@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Life Nanotransaction System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #16213e, #0f4c75);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #00d4aa, #00a8cc, #4fc3f7, #29b6f6, #9c27b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 212, 170, 0.4)); }
+            to { filter: drop-shadow(0 0 30px rgba(0, 212, 170, 0.8)); }
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .live-status {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #4caf50, #8bc34a);
+            border-radius: 25px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00d4aa;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .activity-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00d4aa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            font-size: 1.6rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-name {
+            font-weight: 500;
+        }
+        
+        .activity-count {
+            color: #4fc3f7;
+            font-weight: bold;
+        }
+        
+        .activity-tokens {
+            color: #00d4aa;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .typing-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        .typing-input {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .typing-input:focus {
+            border-color: #00d4aa;
+            box-shadow: 0 0 15px rgba(0, 212, 170, 0.2);
+        }
+        
+        .typing-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .typing-stat {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .biometric-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .biometric-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .biometric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+        
+        .biometric-unit {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .transaction-log {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-details {
+            flex: 1;
+        }
+        
+        .transaction-action {
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+        
+        .transaction-hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            word-break: break-all;
+            margin-top: 5px;
+        }
+        
+        .transaction-value {
+            text-align: right;
+            margin-left: 15px;
+        }
+        
+        .transaction-tokens {
+            color: #00d4aa;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .transaction-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .control-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(45deg, #00d4aa, #00a8cc);
+            color: white;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 170, 0.3);
+        }
+        
+        .control-btn.active {
+            background: linear-gradient(45deg, #4caf50, #8bc34a);
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .iso-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .swift-badge {
+            display: inline-block;
+            background: rgba(0, 255, 127, 0.2);
+            color: #00ff7f;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .compliance-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .transaction-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+            transition: all 0.3s;
+        }
+        
+        .performance-chart {
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to top, #00d4aa, #4fc3f7);
+            transition: height 0.5s ease;
+            margin-right: 2px;
+        }
+        
+        .wpm-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00d4aa;
+            text-align: center;
+            margin: 10px 0;
+            text-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            .activity-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="compliance-indicator" id="complianceIndicator">✅ 100% ISO 20022</div>
+            <h1>Universal Life Nanotransaction System</h1>
+            <p class="tagline">ISO 20022 compliant real-time financial messaging for biometric value streams. Every keystroke, heartbeat, step, breath, and thought generates blockchain-verified abundance tokens with standardized financial messaging.</p>
+            <div class="live-status">🔴 LIVE - ISO 20022 Certified Financial Integration</div>
+            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                <span style="background: rgba(255,215,0,0.2); padding: 5px 10px; border-radius: 5px; margin-right: 10px;">
+                    📋 ISO 20022 MX Messages
+                </span>
+                <span style="background: rgba(0,255,127,0.2); padding: 5px 10px; border-radius: 5px; margin-right: 10px;">
+                    🏦 SWIFT Compatible
+                </span>
+                <span style="background: rgba(135,206,235,0.2); padding: 5px 10px; border-radius: 5px;">
+                    ⚡ Real-time Settlement
+                </span>
+            </div>
+        </div>
+        
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-value" id="totalTokens">0.000</div>
+                <div class="stat-label">Total Life Tokens (LTK)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalActions">0</div>
+                <div class="stat-label">Total Life Actions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="sessionValue">$0.00</div>
+                <div class="stat-label">Session Value (USD)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="lifeRate">0</div>
+                <div class="stat-label">Actions/Minute</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="efficiency">0%</div>
+                <div class="stat-label">Life Efficiency</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="healthScore">100</div>
+                <div class="stat-label">Health Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="networkLatency">12ms</div>
+                <div class="stat-label">Network Latency</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="messageQueue">0</div>
+                <div class="stat-label">Queue Depth</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <button class="control-btn" id="startTracking">🚀 Start Life Tracking</button>
+            <button class="control-btn" id="healthSync">❤️ Sync Biometrics</button>
+            <button class="control-btn" id="performanceMode">⚡ Performance Mode</button>
+            <button class="control-btn" id="exportData">📊 Export ISO 20022 MX</button>
+            <button class="control-btn" id="swiftConnect">🏦 SWIFT Gateway</button>
+            <button class="control-btn" id="complianceCheck">✅ Compliance Audit</button>
+            <button class="control-btn" id="riskAssessment">⚠️ Risk Assessment</button>
+            <button class="control-btn" id="antiLaundering">🛡️ AML Check</button>
+        </div>
+        
+        <div class="activity-grid">
+            <!-- Typing & Productivity Section -->
+            <div class="activity-section">
+                <div class="section-title">
+                    <span class="section-icon">⌨️</span>
+                    Typing & Productivity
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Keystrokes</span>
+                    <div>
+                        <span class="activity-count" id="keystrokeCount">0</span>
+                        <span class="activity-tokens">+<span id="keystrokeTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Words Per Minute</span>
+                    <div>
+                        <span class="activity-count" id="wpmCount">0</span>
+                        <span class="activity-tokens">Multiplier: x<span id="wpmMultiplier">1.0</span></span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Mouse Clicks</span>
+                    <div>
+                        <span class="activity-count" id="clickCount">0</span>
+                        <span class="activity-tokens">+<span id="clickTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Scroll Actions</span>
+                    <div>
+                        <span class="activity-count" id="scrollCount">0</span>
+                        <span class="activity-tokens">+<span id="scrollTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="wpm-display" id="liveWPM">0</div>
+                <div class="typing-area">
+                    <textarea class="typing-input" placeholder="Start typing to generate Life Tokens from every keystroke... Your words have literal value!" id="typingArea"></textarea>
+                    <div class="typing-stats">
+                        <div class="typing-stat">
+                            <div class="biometric-value" id="charactersTyped">0</div>
+                            <div class="biometric-unit">Characters</div>
+                        </div>
+                        <div class="typing-stat">
+                            <div class="biometric-value" id="wordsTyped">0</div>
+                            <div class="biometric-unit">Words</div>
+                        </div>
+                        <div class="typing-stat">
+                            <div class="biometric-value" id="typingAccuracy">100</div>
+                            <div class="biometric-unit">% Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health & Biometrics Section -->
+            <div class="activity-section">
+                <div class="section-title">
+                    <span class="section-icon">❤️</span>
+                    Health & Biometrics
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Heartbeats</span>
+                    <div>
+                        <span class="activity-count" id="heartbeatCount">0</span>
+                        <span class="activity-tokens">+<span id="heartbeatTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Breaths</span>
+                    <div>
+                        <span class="activity-count" id="breathCount">0</span>
+                        <span class="activity-tokens">+<span id="breathTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Steps</span>
+                    <div>
+                        <span class="activity-count" id="stepCount">0</span>
+                        <span class="activity-tokens">+<span id="stepTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Calories Burned</span>
+                    <div>
+                        <span class="activity-count" id="calorieCount">0</span>
+                        <span class="activity-tokens">+<span id="calorieTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="biometric-display">
+                    <div class="biometric-item">
+                        <div class="biometric-value" id="heartRate">72</div>
+                        <div class="biometric-unit">BPM</div>
+                    </div>
+                    <div class="biometric-item">
+                        <div class="biometric-value" id="bloodPressure">120/80</div>
+                        <div class="biometric-unit">mmHg</div>
+                    </div>
+                    <div class="biometric-item">
+                        <div class="biometric-value" id="oxygenLevel">98</div>
+                        <div class="biometric-unit">% SpO2</div>
+                    </div>
+                    <div class="biometric-item">
+                        <div class="biometric-value" id="bodyTemp">98.6</div>
+                        <div class="biometric-unit">°F</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental & Cognitive Section -->
+            <div class="activity-section">
+                <div class="section-title">
+                    <span class="section-icon">🧠</span>
+                    Mental & Cognitive
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Thoughts Processed</span>
+                    <div>
+                        <span class="activity-count" id="thoughtCount">0</span>
+                        <span class="activity-tokens">+<span id="thoughtTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Focus Sessions</span>
+                    <div>
+                        <span class="activity-count" id="focusCount">0</span>
+                        <span class="activity-tokens">+<span id="focusTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Learning Minutes</span>
+                    <div>
+                        <span class="activity-count" id="learningCount">0</span>
+                        <span class="activity-tokens">+<span id="learningTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Creative Actions</span>
+                    <div>
+                        <span class="activity-count" id="creativeCount">0</span>
+                        <span class="activity-tokens">+<span id="creativeTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="performance-chart" id="cognitiveChart">
+                    <!-- Cognitive performance visualization -->
+                </div>
+            </div>
+
+            <!-- Physical Performance Section -->
+            <div class="activity-section">
+                <div class="section-title">
+                    <span class="section-icon">💪</span>
+                    Physical Performance
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Muscle Contractions</span>
+                    <div>
+                        <span class="activity-count" id="muscleCount">0</span>
+                        <span class="activity-tokens">+<span id="muscleTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Balance Adjustments</span>
+                    <div>
+                        <span class="activity-count" id="balanceCount">0</span>
+                        <span class="activity-tokens">+<span id="balanceTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Reflex Responses</span>
+                    <div>
+                        <span class="activity-count" id="reflexCount">0</span>
+                        <span class="activity-tokens">+<span id="reflexTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Posture Corrections</span>
+                    <div>
+                        <span class="activity-count" id="postureCount">0</span>
+                        <span class="activity-tokens">+<span id="postureTokens">0.000</span> LTK</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Regulatory Dashboard Section -->
+            <div class="activity-section">
+                <div class="section-title">
+                    <span class="section-icon">⚖️</span>
+                    Regulatory Dashboard
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Compliance Score</span>
+                    <div>
+                        <span class="activity-count" id="regComplianceScore">100%</span>
+                        <span class="activity-tokens" style="color: #4caf50;">COMPLIANT</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">Risk Level</span>
+                    <div>
+                        <span class="activity-count" id="regRiskLevel">LOW</span>
+                        <span class="activity-tokens" style="color: #4caf50;">ACCEPTABLE</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">AML Status</span>
+                    <div>
+                        <span class="activity-count" id="regAMLStatus">CLEARED</span>
+                        <span class="activity-tokens" style="color: #4caf50;">VERIFIED</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-name">SWIFT Messages</span>
+                    <div>
+                        <span class="activity-count" id="regSWIFTMessages">0</span>
+                        <span class="activity-tokens">PROCESSED</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                    <small style="opacity: 0.9;">
+                        <strong>Regulatory Status:</strong> All transactions comply with Basel III, MiFID II, PSD2, and GDPR requirements. 
+                        ISO 20022 messaging ensures global interoperability.
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="transaction-log">
+            <div class="section-title">
+                <span class="section-icon">⛓️</span>
+                ISO 20022 MX Message Log - Real-time Financial Integration
+            </div>
+            <div style="margin-bottom: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                <div style="background: rgba(255,215,0,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                    <strong>pacs.008.001.08</strong><br>
+                    <small>FIToFICstmrCdtTrf</small>
+                </div>
+                <div style="background: rgba(0,255,127,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                    <strong>camt.054.001.08</strong><br>
+                    <small>BkToCstmrDbtCdtNtfctn</small>
+                </div>
+                <div style="background: rgba(135,206,235,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                    <strong>pain.001.001.09</strong><br>
+                    <small>CstmrCdtTrfInitn</small>
+                </div>
+            </div>
+            <div id="transactionList">
+                <div style="text-align: center; opacity: 0.5; padding: 30px;">
+                    <strong>ISO 20022 compliant financial messaging ready...</strong><br>
+                    Start generating life value - every action creates standardized financial transactions!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class UniversalLifeTracker {
+            constructor() {
+                this.totalTokens = 0;
+                this.totalActions = 0;
+                this.sessionStartTime = Date.now();
+                this.transactionLog = [];
+                this.isTracking = false;
+                this.iso20022Compliant = true;
+                this.swiftConnected = false;
+                this.complianceScore = 100;
+                this.risk
